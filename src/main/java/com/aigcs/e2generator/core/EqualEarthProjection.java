@@ -4,7 +4,8 @@ package com.aigcs.e2generator.core;
  * Equal Earth 投影（Šavrič, Patterson, Jenny, 2018）。
  * <p>
  * 公式与常数来自论文，参考 d3-geo 的 {@code equalEarth} 实现（ISC License,
- * <a href="https://github.com/d3/d3-geo/blob/main/src/projection/equalEarth.js">equalEarth.js</a>），
+ * <a href=
+ * "https://github.com/d3/d3-geo/blob/main/src/projection/equalEarth.js">equalEarth.js</a>），
  * 与 TFC Eratosthenes 的投影层在公式上保持一致。本类为独立实现（查找表 + 牛顿反解），
  * 未复制上述项目的源代码。
  * 
