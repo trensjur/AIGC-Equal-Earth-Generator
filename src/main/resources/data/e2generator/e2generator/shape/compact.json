@@ -1,0 +1,14 @@
+{
+    "description": "Compact world (200 chunk radius) for small servers",
+    "planetRadiusChunks": 200,
+    "widthToHeightRatio": 2.0,
+    "boundaryMode": "OUTLINE",
+    "equatorZ": 0,
+    "seamBuffer": 256,
+    "polarBuffer": 128,
+    "softEdgeWidth": 96,
+    "structureMargin": 256,
+    "meridianGrace": 32,
+    "oceanFloorY": 24,
+    "fallbackBiome": "minecraft:deep_ocean"
+}

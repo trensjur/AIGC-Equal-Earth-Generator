@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "com.aigcs.e2generator.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ChunkGeneratorMixin",
+    "MultiNoiseBiomeSourceMixin",
+    "NoiseBasedChunkGeneratorMixin",
+    "NoiseChunkMixin"
+  ],
+  "client": [
+    "client.CreateWorldScreenMixin",
+    "client.GridLayoutTabAccessor",
+    "client.TabNavigationBarAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

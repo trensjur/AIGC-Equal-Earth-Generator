@@ -1,0 +1,14 @@
+{
+    "description": "Example pack-defined preset. Copy this file into your data pack and change the values.",
+    "planetRadiusChunks": 800,
+    "widthToHeightRatio": 2.0,
+    "boundaryMode": "OUTLINE",
+    "equatorZ": 0,
+    "seamBuffer": 512,
+    "polarBuffer": 256,
+    "softEdgeWidth": 128,
+    "structureMargin": 320,
+    "meridianGrace": 48,
+    "oceanFloorY": 16,
+    "fallbackBiome": "minecraft:deep_ocean"
+}

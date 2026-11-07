@@ -1,0 +1,14 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.aigcs.e2generator.compat.tfc.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "plugin": "com.aigcs.e2generator.compat.tfc.TfcMixinPlugin",
+    "mixins": [
+        "RegionGeneratorMixin",
+        "RegionPointMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

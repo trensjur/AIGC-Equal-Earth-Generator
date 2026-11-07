@@ -1,0 +1,14 @@
+{
+    "description": "Default Earth-like world (500 chunk radius, full Equal Earth outline)",
+    "planetRadiusChunks": 500,
+    "widthToHeightRatio": 2.0,
+    "boundaryMode": "OUTLINE",
+    "equatorZ": 0,
+    "seamBuffer": 384,
+    "polarBuffer": 192,
+    "softEdgeWidth": 96,
+    "structureMargin": 256,
+    "meridianGrace": 32,
+    "oceanFloorY": 24,
+    "fallbackBiome": "minecraft:deep_ocean"
+}

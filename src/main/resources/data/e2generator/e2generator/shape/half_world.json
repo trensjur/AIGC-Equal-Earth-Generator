@@ -1,0 +1,14 @@
+{
+    "description": "Half world (1:1 width/height) for old-world / new-world style maps",
+    "planetRadiusChunks": 500,
+    "widthToHeightRatio": 1.0,
+    "boundaryMode": "OUTLINE",
+    "equatorZ": 0,
+    "seamBuffer": 384,
+    "polarBuffer": 192,
+    "softEdgeWidth": 96,
+    "structureMargin": 256,
+    "meridianGrace": 32,
+    "oceanFloorY": 24,
+    "fallbackBiome": "minecraft:deep_ocean"
+}
