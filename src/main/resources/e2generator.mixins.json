@@ -11,6 +11,8 @@
   "client": [
     "client.CreateWorldScreenMixin",
     "client.GridLayoutTabAccessor",
+    "client.LevelRendererMixin",
+    "client.OptionsMixin",
     "client.TabNavigationBarAccessor"
   ],
   "injectors": {

@@ -47,3 +47,19 @@ TFC Eratosthenes 本身的修改或再分发都必须遵守其 GPL 条款。
 
 TerraFirmaCraft（TFC）仅作为可选的编译期兼容目标（`compileOnly`），**不随本模组分发**。
 TFC 的代码与素材版权归其作者所有，使用或分发 TFC 时请遵守其自身许可证。
+
+## 5. Ad Astra 3D 资源包素材（`gameassets`）
+
+本模组可选的 `gameassets` 资源包中的太阳、月亮、行星与 GUI 预览贴图改编自
+**Ad Astra 3D** 资源包，用于为原版与 Ad Astra 的天空提供可替换材质：
+
+| 项目 | 信息 |
+| --- | --- |
+| 名称 | Ad Astra 3D |
+| 作者 | Yellowcake_3D |
+| 许可证 | **MIT License** |
+| 来源 | <https://modrinth.com/resourcepack/ad-astra-3d> |
+
+这些贴图以 MIT License 再分发，完整许可证与署名文本见
+[`gameassets/LICENSE.txt`](gameassets/LICENSE.txt)。本模组不包含 Ad Astra 模组本身的
+代码或素材；Ad Astra 仅作为可选兼容目标（通过可选 Mixin 配置与资源包路径适配）。

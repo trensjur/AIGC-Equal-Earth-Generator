@@ -51,6 +51,12 @@ tasks.named('jar') {
     from('NOTICE.md') { into 'META-INF' }
 }
 
+// Bundle the optional gameassets resource pack as a separate folder at the jar root.
+// AddPackFindersEvent registers it as an independent, toggleable resource pack.
+tasks.named('processResources') {
+    from('gameassets') { into 'gameassets' }
+}
+
 // Mojang ships Java 21 to end users in 1.21.1, so mods should target Java 21.
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 

@@ -139,6 +139,7 @@ public interface WorldgenAdapter {
 
 - `README.md`：功能、配置、预设、TFC、优化模组、API/事件、实施状态。
 - `docs/0.9.5-地理信息API.md`：地理信息查询入口的坐标约定、字段语义与示例。
+- `docs/0.9.6-天空与环境配置.md`：天空倾斜、贴图缩放、Ad Astra 兼容、8 槽位预设库与 `gameassets` 资源包。
 - 设计文档路线图已标记 Phase 4–6 完成。
 - 本文件：实现与测试清单。
 

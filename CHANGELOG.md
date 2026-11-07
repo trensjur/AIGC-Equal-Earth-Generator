@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.9.6
+
+### 天空与环境视觉效果
+
+- 新增客户端配置：`skyTiltEnabled`、`skyTiltAuto`、`skyTiltStrength`、`skyManualTilt`、
+  `sunTextureScale`、`moonTextureScale`、`celestialTextureScale`、`adAstraCompatibility`。
+- 原版天空 Mixin（`LevelRendererMixin`）：
+  - 太阳 / 月亮四边形支持独立缩放；
+  - 日月轨道可附加倾斜角，自动模式按玩家纬度变化；非球形维度退化为
+    `z / 30000 * 90°`。
+- 可选 Ad Astra 天空兼容（`e2generator.adastra.mixins.json` + `AdAstraMixinPlugin`）：
+  对 `ModSkyRenderer` 的天体贴图按路径应用太阳 / 月亮 / 其它天体缩放，并叠加倾斜。
+- 新增本地预设库（8 个槽位，`config/e2generator-sky-presets.json`），
+  配置页底部新增“打开本地预设库”与“重置天空设置”按钮。
+- 新增内置资源包 `gameassets`，首次启动默认启用，可在“资源包”界面关闭：
+  - `assets/minecraft/textures/environment/sun.png`；
+  - `assets/minecraft/textures/environment/moon_phases.png`（由 `moon.png` 生成）；
+  - `assets/ad_astra/textures/environment/*.png`；
+  - `assets/adastraextra/textures/sky/*.png`；
+  - `assets/stellarview/textures/environment/...`（附加兼容）。
+  - 贴图改编自 **Ad Astra 3D**（Yellowcake_3D，MIT），见 `NOTICE.md` 与
+    `gameassets/LICENSE.txt`。
+- 版本号 0.9.5 → 0.9.6。
+
 ## 0.9.5
 
 - 许可证由 All Rights Reserved 改为 **MIT**，新增 `LICENSE` 与 `NOTICE.md`。

@@ -2,7 +2,7 @@
 
 > 仓库：<https://github.com/trensjur/AIGC-Equal-Earth-Generator>
 >
-> 当前版本：**0.9.5** —— Phase 0–6 全部实现，并新增本初子午线与地理信息查询 API。
+> 当前版本：**0.9.6** —— Phase 0–6 全部实现，新增本初子午线/地理信息查询与天空/环境配置。
 
 > [!WARNING]
 > **AIGC 声明**：本模组的代码、资源与文档使用 **DeepSeek AI** 辅助生成，并经人工整理、编译与测试。
@@ -145,7 +145,34 @@ $$
 $$
 
 也可以在代码里用 `SphericalWorldApi.getRecommendedDistantHorizonsCurveRatio(level)` 查询。
-- LOD 镜像插件（把对侧 LOD 平移）不在 0.9.5 范围内；需要时应基于 DH 公开 API 做版本锁定的独立模块。
+- LOD 镜像插件（把对侧 LOD 平移）不在 0.9.6 范围内；需要时应基于 DH 公开 API 做版本锁定的独立模块。
+
+## 天空与环境（0.9.6）
+
+客户端新增了一组可调的日月 / 天空视觉效果，并内置了一个可开关的资源包：
+
+- **自动日月倾斜**：按玩家当前纬度自动计算日月轨道倾斜角；非球形维度用
+  `z / 30000 * 90°` 估算。也可以关闭自动模式，使用固定角度。
+- **日月贴图缩放**：太阳、月亮、其它天体分别有独立的缩放倍数。原版与 Ad Astra
+  的自定义天空渲染都支持（Ad Astra 需安装并可关闭兼容开关）。
+- **本地预设库**：8 个槽位，保存在 `config/e2generator-sky-presets.json`；在
+  NeoForge 配置页底部可以打开预设库或一键重置天空设置。
+- **内置资源包 `gameassets`**：首次启动默认启用，可在“资源包”界面关闭。包含
+  原版太阳、Ad Astra / Ad Astra Extra 天空与行星材质，素材改编自 **Ad Astra 3D**
+  （Yellowcake_3D，MIT；见 `NOTICE.md` 与 `gameassets/LICENSE.txt`）。
+
+| 配置项 | 默认值 | 说明 |
+| --- | --- | --- |
+| `skyTiltEnabled` | `true` | 是否启用日月轨道额外倾斜 |
+| `skyTiltAuto` | `true` | 自动按玩家位置计算；`false` 时使用固定角度 |
+| `skyTiltStrength` | `1.0` | 自动倾斜强度（纬度 × 强度） |
+| `skyManualTilt` | `0.0` | 固定倾斜角（度） |
+| `sunTextureScale` | `1.0` | 太阳贴图渲染缩放 |
+| `moonTextureScale` | `1.0` | 月亮贴图渲染缩放 |
+| `celestialTextureScale` | `1.0` | 其它天体（如 Ad Astra 行星）缩放 |
+| `adAstraCompatibility` | `true` | 是否对 Ad Astra 自定义天空应用倾斜与缩放 |
+
+所有选项都位于客户端配置 `config/e2generator-client.toml`，并可在游戏的模组配置界面中调整。
 
 ## 公开 API 与事件
 
@@ -261,6 +288,7 @@ WorldgenAdapters.register(new MyWorldgenAdapter());
 | Phase 5 | c2me/DH 兼容说明、性能优化（每区块掩码缓存、退化开关） | ✅ 0.9.4 |
 | Phase 6 | 数据包形状预设、创建世界 UI、公开事件/API、文档 | ✅ 0.9.4 |
 | 0.9.5 | 地理信息查询 API（本初子午线、反子午线、赤道、极线、地图范围、经纬度换算、大圆距离） | ✅ 已完成 |
+| 0.9.6 | 天空与环境配置（自动日月倾斜、贴图缩放、8 槽位预设库、内置 gameassets 资源包、Ad Astra 兼容） | ✅ 已完成 |
 
 ## 构建
 
