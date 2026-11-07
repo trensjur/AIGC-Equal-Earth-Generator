@@ -2,8 +2,10 @@ package com.aigcs.e2generator.mixin;
 
 import javax.annotation.Nullable;
 
+import java.util.Optional;
 import java.util.OptionalDouble;
 
+import com.aigcs.e2generator.api.PlanetGeography;
 import com.aigcs.e2generator.api.PlanetRadiusProvider;
 import com.aigcs.e2generator.api.ShapeAware;
 import com.aigcs.e2generator.api.SphericalWorldApi;
@@ -74,6 +76,12 @@ public abstract class NoiseBasedChunkGeneratorMixin implements ShapeAware, Plane
     public OptionalDouble planetRadiusBlocks() {
         WorldShape shape = this.spherical$shape;
         return shape == null ? OptionalDouble.empty() : OptionalDouble.of(SphericalWorldApi.radiusBlocksOf(shape));
+    }
+
+    @Override
+    public Optional<PlanetGeography> planetGeography() {
+        WorldShape shape = this.spherical$shape;
+        return shape == null ? Optional.empty() : Optional.of(PlanetGeography.of(shape));
     }
 
     @Unique

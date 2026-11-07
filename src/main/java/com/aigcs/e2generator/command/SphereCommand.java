@@ -3,6 +3,8 @@ package com.aigcs.e2generator.command;
 import java.util.List;
 import java.util.Locale;
 
+import com.aigcs.e2generator.api.MapBounds;
+import com.aigcs.e2generator.api.PlanetGeography;
 import com.aigcs.e2generator.core.ShapePreset;
 import com.aigcs.e2generator.core.WorldShape;
 import com.aigcs.e2generator.world.ShapeManager;
@@ -27,6 +29,7 @@ import net.minecraft.world.phys.Vec3;
  * {@code /sphere} 命令：
  * <ul>
  * <li>{@code /sphere info} —— 显示形状参数；</li>
+ * <li>{@code /sphere geography} —— 显示本初子午线、赤道、极线、地图范围等地理信息；</li>
  * <li>{@code /sphere coords} —— 当前位置的经纬度；</li>
  * <li>{@code /sphere locate <lat> <lon>} —— 经纬度换算为 x/z；</li>
  * <li>{@code /sphere tp <lat> <lon>} —— 传送到经纬度（需要 OP）；</li>
@@ -42,6 +45,10 @@ public final class SphereCommand {
         dispatcher.register(Commands.literal("sphere")
                 .then(Commands.literal("info")
                         .executes(SphereCommand::info))
+                .then(Commands.literal("geography")
+                        .executes(SphereCommand::geography))
+                .then(Commands.literal("geo")
+                        .executes(SphereCommand::geography))
                 .then(Commands.literal("coords")
                         .executes(SphereCommand::coords))
                 .then(Commands.literal("locate")
@@ -83,6 +90,42 @@ public final class SphereCommand {
         }
         context.getSource().sendSuccess(() -> Component.literal(shape.describe()), false);
         return 1;
+    }
+
+    private static int geography(CommandContext<CommandSourceStack> context) {
+        WorldShape shape = shape(context);
+        if (shape == null) {
+            context.getSource().sendFailure(Component.translatable("e2generator.command.no_shape"));
+            return 0;
+        }
+        PlanetGeography geography = PlanetGeography.of(shape);
+        MapBounds bounds = geography.bounds();
+        context.getSource().sendSuccess(() -> Component.translatable("e2generator.command.geography.radius",
+                number(geography.radiusChunks(), "%.1f"),
+                number(geography.radiusBlocks(), "%.0f"),
+                number(geography.circumference(), "%.0f")), false);
+        context.getSource().sendSuccess(() -> Component.translatable("e2generator.command.geography.meridian",
+                number(geography.primeMeridianX(), "%.0f"),
+                number(geography.antimeridianX(), "%.0f")), false);
+        context.getSource().sendSuccess(() -> Component.translatable("e2generator.command.geography.latitudes",
+                number(geography.equatorZ(), "%.0f"),
+                number(geography.northPoleZ(), "%.0f"),
+                number(geography.southPoleZ(), "%.0f")), false);
+        context.getSource().sendSuccess(() -> Component.translatable("e2generator.command.geography.bounds",
+                number(bounds.minX(), "%.0f"),
+                number(bounds.maxX(), "%.0f"),
+                number(bounds.minZ(), "%.0f"),
+                number(bounds.maxZ(), "%.0f")), false);
+        context.getSource().sendSuccess(() -> Component.translatable("e2generator.command.geography.lengths",
+                number(geography.meridianLengthOnMap(), "%.0f"),
+                number(geography.meridianArcLength(), "%.0f"),
+                number(geography.equatorWidth(), "%.0f"),
+                number(geography.mapArea(), "%.0f")), false);
+        return 1;
+    }
+
+    private static String number(double value, String pattern) {
+        return String.format(Locale.ROOT, pattern, value);
     }
 
     private static int coords(CommandContext<CommandSourceStack> context) {

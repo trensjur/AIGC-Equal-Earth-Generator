@@ -2,7 +2,7 @@
 
 > 仓库：<https://github.com/trensjur/AIGC-Equal-Earth-Generator>
 >
-> 当前版本：**0.9.4** —— Phase 0–6 全部实现（含 TFC 适配、优化模组兼容、数据包预设与公开事件）。
+> 当前版本：**0.9.5** —— Phase 0–6 全部实现，并新增本初子午线与地理信息查询 API。
 
 > [!WARNING]
 > **AIGC 声明**：本模组的代码、资源与文档使用 **DeepSeek AI** 辅助生成，并经人工整理、编译与测试。
@@ -145,34 +145,64 @@ $$
 $$
 
 也可以在代码里用 `SphericalWorldApi.getRecommendedDistantHorizonsCurveRatio(level)` 查询。
-- LOD 镜像插件（把对侧 LOD 平移）不在 0.9.4 范围内；需要时应基于 DH 公开 API 做版本锁定的独立模块。
+- LOD 镜像插件（把对侧 LOD 平移）不在 0.9.5 范围内；需要时应基于 DH 公开 API 做版本锁定的独立模块。
 
-## 公开 API 与事件（Phase 6）
+## 公开 API 与事件
 
-`com.aigcs.e2generator.api` 下保留了查询入口，供其它模组查询**当前世界使用的星球半径**：
+`com.aigcs.e2generator.api` 下保留了查询入口，供其它模组查询当前世界的**星球半径**与**地理信息**。
+
+### 星球半径
 
 ```java
-// 1) 直接查半径（区块 / 方块）
 OptionalDouble chunks = SphericalWorldApi.getPlanetRadiusChunks(level);
 OptionalDouble blocks = SphericalWorldApi.getPlanetRadiusBlocks(level);
-
-// 2) 判断是否球形世界，并拿到完整世界形状
-if (SphericalWorldApi.isSphericalWorld(level)) {
-    WorldShape shape = SphericalWorldApi.getWorldShape(level);
-    double seamX = shape.seamX(0);          // 赤道处的接缝位置
-    double latitude = shape.latitudeAt(player.getZ());
-}
-
-// 3) 也可以直接从生成器上 instanceof 查询
-if (level.getChunkSource().getGenerator() instanceof PlanetRadiusProvider provider) {
-    provider.planetRadiusChunks().ifPresent(radius -> { /* ... */ });
-}
+OptionalDouble circumference = SphericalWorldApi.getPlanetCircumference(level);
 ```
 
+### 地理信息（0.9.5）
+
+```java
+// 一次性拿到完整快照
+SphericalWorldApi.getPlanetGeography(level).ifPresent(geo -> {
+    double primeMeridianX = geo.primeMeridianX();         // 本初子午线，恒为 0
+    double antimeridianX = geo.antimeridianX();           // 赤道处的反子午线（接缝）
+    double meridianMapLength = geo.meridianLengthOnMap(); // 地图上的子午线长度 2H
+    double meridianArc = geo.meridianArcLength();         // 星球上的真实弧长 πR
+    double equatorZ = geo.equatorZ();
+    double northPoleZ = geo.northPoleZ();
+    MapBounds bounds = geo.bounds();
+    double distance = geo.surfaceDistance(39.9, 116.4, 31.2, 121.5); // 大圆距离（方块）
+});
+
+// 也可以单独查询
+OptionalDouble primeMeridian = SphericalWorldApi.getPrimeMeridianX(level);
+OptionalDouble seamX = SphericalWorldApi.getAntimeridianXAt(level, z);
+OptionalDouble latitude = SphericalWorldApi.getLatitude(level, z);
+Optional<GeographicPosition> position = SphericalWorldApi.getGeographicPosition(level, x, z);
+```
+
+| 方法 | 含义 |
+| --- | --- |
+| `getPlanetGeography(level)` | 完整快照 `PlanetGeography` |
+| `getPrimeMeridianX(level)` | 本初子午线 x（恒为 0） |
+| `getAntimeridianX(level)` / `getAntimeridianXAt(level, z)` | 反子午线 x（赤道处 / 指定 z） |
+| `getMeridianLengthOnMap(level)` / `getMeridianArcLength(level)` | 地图子午线长度 `2H` / 真实弧长 `πR` |
+| `getEquatorZ(level)` / `getEquatorWidth(level)` / `getEquatorLength(level)` | 赤道位置、地图宽度、真实周长 |
+| `getNorthPoleZ(level)` / `getSouthPoleZ(level)` | 南北极线 z |
+| `getMapBounds(level)` | 地图包围盒 `MapBounds` |
+| `getPlanetSurfaceArea(level)` / `getMapArea(level)` | 球面面积 / 投影地图面积 |
+| `getLatitude(level, z)` / `getLongitude(level, x, z)` | 方块坐标 → 经纬度 |
+| `getZForLatitude(level, lat)` / `getXForLongitude(level, lon, z)` | 经纬度 → 方块坐标 |
+| `getGeographicPosition(level, x, z)` | 经纬度 + 是否在地图内 + 陆地掩码 |
+| `isInsideMap(level, x, z)` / `getLandMask(level, x, z)` | 地图轮廓 / 陆地掩码 |
+| `getSurfaceDistance(level, lat1, lon1, lat2, lon2)` | 大圆距离（方块） |
+
 - 半径由半子午线 H 与宽高比按等面积关系反推，与创建世界时选择的值一致。
-- 所有方法允许传入 `null`；非球形世界返回 `OptionalDouble.empty()` / `null`，不会抛异常。
+- 所有方法允许传入 `null`；非球形世界返回空值（`Optional.empty()` / `OptionalDouble.empty()` / `false` / `null`），不会抛异常。
 - 服务端结果权威；客户端使用登录/换维度时同步过来的形状。
-- 另有 `getPlanetCircumference(level)` 与 `getRecommendedDistantHorizonsCurveRatio(level)`。
+- 生成器侧同样可用：`level.getChunkSource().getGenerator() instanceof PlanetRadiusProvider provider`
+  后调用 `provider.planetRadiusChunks()` 或 `provider.planetGeography()`。
+- 另有 `getRecommendedDistantHorizonsCurveRatio(level)`。
 
 ### 事件
 
@@ -206,6 +236,7 @@ WorldgenAdapters.register(new MyWorldgenAdapter());
 ## 命令
 
 - `/sphere info` —— 显示形状参数
+- `/sphere geography`（别名 `/sphere geo`）—— 星球半径、本初子午线、反子午线、赤道、极线、地图范围
 - `/sphere coords` —— 当前经纬度
 - `/sphere locate <lat> <lon>` —— 经纬度换算为 x/z
 - `/sphere tp <lat> <lon>` —— 传送到经纬度（需要 OP）
@@ -229,6 +260,7 @@ WorldgenAdapters.register(new MyWorldgenAdapter());
 | Phase 4 | TFC 适配（可选 Mixin + 生成器适配器） | ✅ 0.9.4 |
 | Phase 5 | c2me/DH 兼容说明、性能优化（每区块掩码缓存、退化开关） | ✅ 0.9.4 |
 | Phase 6 | 数据包形状预设、创建世界 UI、公开事件/API、文档 | ✅ 0.9.4 |
+| 0.9.5 | 地理信息查询 API（本初子午线、反子午线、赤道、极线、地图范围、经纬度换算、大圆距离） | ✅ 已完成 |
 
 ## 构建
 

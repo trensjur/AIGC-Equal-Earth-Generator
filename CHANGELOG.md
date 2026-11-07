@@ -1,12 +1,31 @@
 # Changelog
 
-## Unreleased
+## 0.9.5
 
 - 许可证由 All Rights Reserved 改为 **MIT**，新增 `LICENSE` 与 `NOTICE.md`。
 - 在 README、模组元数据（`credits`）中注明本模组受 **TFC Eratosthenes** 启发，并按该项目
   **GPL-3.0-or-later** 的要求注明作者（Trygve55）与源码链接。
 - 删除 `fromgithub/docs/TFC-Eratosthenes-模组解析.md`。
 - 在 README 与 `NOTICE.md` 中增加 **DeepSeek AI** 生成声明、AIGC 内容免责声明与使用注意事项。
+
+### 地理信息查询 API
+
+- 新增公开数据类型：
+  - `PlanetGeography`：半径、赤道周长、半子午线、本初子午线、反子午线、赤道、极线、
+    地图范围、球面面积/地图面积、大圆距离与经纬度换算。
+  - `MapBounds`：地图包围盒（`minX` / `maxX` / `minZ` / `maxZ`）。
+  - `GeographicPosition`：方块坐标对应的纬度、经度、是否在地图内、陆地掩码。
+- `SphericalWorldApi` 新增查询入口：
+  `getPlanetGeography`、`getPrimeMeridianX`、`getAntimeridianX`、`getAntimeridianXAt`、
+  `getMeridianLengthOnMap`、`getMeridianArcLength`、`getEquatorLength`、`getEquatorZ`、
+  `getEquatorWidth`、`getNorthPoleZ`、`getSouthPoleZ`、`getMapBounds`、
+  `getPlanetSurfaceArea`、`getMapArea`、`getLatitude`、`getLongitude`、
+  `getZForLatitude`、`getXForLongitude`、`getGeographicPosition`、`isInsideMap`、
+  `getLandMask`、`getSurfaceDistance`。
+- `PlanetRadiusProvider` 新增默认方法 `planetGeography()`，
+  `NoiseBasedChunkGenerator` Mixin 已实现。
+- 新命令：`/sphere geography`（别名 `/sphere geo`）。
+- 版本号 0.9.4 → 0.9.5。
 
 ## 0.9.4
 
