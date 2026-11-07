@@ -3,6 +3,13 @@
 本文件说明 AIGC's Equal Earth Generator（下称"本模组"）的设计来源、第三方组件及其许可证。
 本模组本身以 **MIT License** 发布，完整文本见 [`LICENSE`](LICENSE)。
 
+## 0. AIGC 生成声明
+
+本项目的源代码、数据包、语言文件与文档使用 **DeepSeek AI** 辅助生成，并经维护者人工整理、
+编译与测试。AI 生成内容可能存在错误、遗漏或与特定模组版本不兼容的情况；本项目按 MIT
+License 的 “AS IS” 条款提供，不附带任何担保，使用前请备份存档并在测试环境中验证。
+完整的免责声明与注意事项见仓库 README 的「AIGC 声明与免责」章节。
+
 ## 1. 设计灵感：TFC Eratosthenes
 
 本模组在**设计思路**上受到 **TFC Eratosthenes** 的启发，包括但不限于：有限球形世界、
@@ -21,9 +28,6 @@
 TFC Eratosthenes 的源代码或素材。因此本模组可以按 MIT License 发布。TFC Eratosthenes
 的代码、名称与素材版权归 Trygve55 所有，并继续遵循 GPL-3.0-or-later；任何对
 TFC Eratosthenes 本身的修改或再分发都必须遵守其 GPL 条款。
-
-本仓库中的 `fromgithub/docs/TFC-Eratosthenes-模组解析.md` 是对该项目的研究/兼容性分析文档，
-文中引用的代码片段（如有）版权归原作者所有，遵循 GPL-3.0-or-later，不适用本仓库的 MIT 许可。
 
 ## 2. Equal Earth 投影
 

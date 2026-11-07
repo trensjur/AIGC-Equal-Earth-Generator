@@ -5,6 +5,8 @@
 - 许可证由 All Rights Reserved 改为 **MIT**，新增 `LICENSE` 与 `NOTICE.md`。
 - 在 README、模组元数据（`credits`）中注明本模组受 **TFC Eratosthenes** 启发，并按该项目
   **GPL-3.0-or-later** 的要求注明作者（Trygve55）与源码链接。
+- 删除 `fromgithub/docs/TFC-Eratosthenes-模组解析.md`。
+- 在 README 与 `NOTICE.md` 中增加 **DeepSeek AI** 生成声明、AIGC 内容免责声明与使用注意事项。
 
 ## 0.9.4
 
